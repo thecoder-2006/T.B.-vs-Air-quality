@@ -1,0 +1,237 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #fff5e6; /* Light cream background */
+    color: #5d4037; /* Warm brown text */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #e65100; /* Deep orange header */
+}
+
+#container {
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+#about-section {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(230, 81, 0, 0.2); /* Orange shadow */
+}
+
+#about-section h2 {
+    text-align: center;
+    color: #ff6f00; /* Amber */
+    margin: 20px 0;
+}
+
+#about-section p {
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+#about-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+#about-section li {
+    margin: 10px 0;
+}
+
+#input-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#input-section input {
+    padding: 12px;
+    width: 220px;
+    border: 1px solid #ffcc80; /* Light orange border */
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#input-section button {
+    padding: 12px 24px;
+    background-color: #ff5722; /* Deep orange button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#input-section button:hover {
+    background-color: #e64a19; /* Darker orange on hover */
+}
+
+#results {
+    position: relative;
+}
+
+.results-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.location-results, .tb-history {
+    flex: 1;
+    min-width: 320px;
+    max-width: 500px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.2); /* Amber shadow */
+}
+
+.location-results {
+    flex: 1;
+    min-width: 320px;
+    max-width: 500px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(230, 81, 0, 0.15);
+    transition: transform 0.2s;
+    border-top: 3px solid #ff7043;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #d84315;
+    font-size: 1.8em;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ffe0b2;
+    padding-bottom: 10px;
+}
+
+.card .data-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card .data-item {
+    padding: 10px;
+    background-color: #fff8e1;
+    border-radius: 6px;
+    border-left: 3px solid #ff9800;
+}
+
+.card .data-label {
+    font-weight: bold;
+    color: #e65100;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.card .data-value {
+    font-size: 1.2em;
+    color: #5d4037;
+}
+
+.card .insight-section {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #fff5e6;
+    border-radius: 6px;
+    border-left: 3px solid #f57c00;
+}
+
+.card .insight-title {
+    font-weight: bold;
+    color: #d84315;
+    margin-bottom: 8px;
+}
+
+.card canvas {
+    margin-top: 25px;
+    border-top: 1px solid #ffe0b2;
+    padding-top: 15px;
+}
+
+.tb-history h2 {
+    text-align: center;
+    color: #f57c00; /* Orange */
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.tb-history canvas {
+    margin-bottom: 20px;
+}
+
+.tb-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.tb-history th, .tb-history td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ffe0b2; /* Very light orange border */
+}
+
+.tb-history th {
+    background-color: #ff9800; /* Orange table header */
+    color: white;
+}
+
+.tb-history tr:nth-child(even) {
+    background-color: #fff8e1; /* Very light amber background */
+}
+
+.tb-history .note {
+    font-size: 0.9em;
+    color: #bf360c; /* Deep orange/red text */
+    text-align: center;
+}
+
+#back-button {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    padding: 10px 20px;
+    background-color: #ffab00; /* Amber back button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#back-button:hover {
+    background-color: #ff8f00; /* Darker amber on hover */
+}
+
+canvas {
+    max-width: 100%;
+    margin-top: 15px;
+}
