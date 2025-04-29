@@ -1,17 +1,17 @@
-// Mock TB data for specific locations
+// Mock TB data for specific locations with refined cases and deaths
 const mockTBData = {
-    "London": { cases: 500, population: 9000000 },
-    "New York": { cases: 700, population: 8400000 },
-    "Mumbai": { cases: 1200, population: 21000000 }
+    "London": { cases: 1400, population: 9000000, deaths: 5 },
+    "New York": { cases: 370, population: 8400000, deaths: 2 },
+    "Mumbai": { cases: 50000, population: 21000000, deaths: 6300 }
 };
 
-// Global TB and PM2.5 data for past 5 years (TB from WHO, PM2.5 mocked from trends)
+// Global TB and PM2.5 data for past 5 years (updated with WHO Global Tuberculosis Report 2024)
 const globalTBData = {
-    2020: { incidence: 10.1, deaths: "1.5", pm25: 15.0 },
-    2021: { incidence: 10.4, deaths: "1.6", pm25: 14.8 },
-    2022: { incidence: 10.7, deaths: "1.3", pm25: 14.5 },
+    2020: { incidence: 9.9, deaths: "1.5", pm25: 15.0 },
+    2021: { incidence: 10.1, deaths: "1.6", pm25: 14.8 },
+    2022: { incidence: 10.6, deaths: "1.3", pm25: 14.5 },
     2023: { incidence: 10.8, deaths: "1.25", pm25: 14.2 },
-    2024: { incidence: 10.7, deaths: "TBD", pm25: 14.0 }
+    2024: { incidence: 10.7, deaths: "1.2", pm25: 14.0 }
 };
 
 // Replace with your actual API keys
@@ -48,8 +48,10 @@ async function fetchData() {
 
     const resultsDiv = document.getElementById('results');
     const aboutDetails = document.getElementById('about-details');
+    const graphSection = document.getElementById('graph-section');
     resultsDiv.innerHTML = '<p>Loading data...</p>';
     aboutDetails.style.display = 'none';
+    graphSection.style.display = 'none'; // Hide global TB section
 
     try {
         const locationData = await fetchWithRetry(
@@ -65,18 +67,18 @@ async function fetchData() {
             `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPENWEATHERMAP_API_KEY}&units=metric`
         );
 
-        const tbInfo = mockTBData[location] || { cases: 100, population: 1000000 };
-        const tbPercentage = (tbInfo.cases / tbInfo.population * 100).toFixed(2);
+        const tbInfo = mockTBData[location] || { cases: 200, population: 1000000, deaths: 20 };
+        const tbRate = (tbInfo.cases / tbInfo.population * 100000).toFixed(2); // TB incidence rate per 100,000
 
         const airQualityData = await fetchWithRetry(
             `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${OPENWEATHERMAP_API_KEY}`
         );
         const pm25 = airQualityData.list[0].components.pm2_5;
 
-        const geminiInitial = await fetchGeminiSummary(location, 0, 0, 0, "Initializing data analysis...");
-        const geminiSummary = await fetchGeminiSummary(location, tbPercentage, weatherData1.main.temp, pm25);
+        const geminiInitial = await fetchGeminiSummary(location, 0, 0, 0, 0, "Initializing data analysis...");
+        const geminiSummary = await fetchGeminiSummary(location, tbRate, tbInfo.cases, tbInfo.deaths, weatherData1.main.temp, pm25);
 
-        displayResults(location, tbPercentage, tbInfo.cases, weatherData1, pm25, geminiSummary);
+        displayResults(location, tbRate, tbInfo.cases, tbInfo.deaths, weatherData1, pm25, geminiSummary);
     } catch (error) {
         console.error('Fetch error:', error);
         resultsDiv.innerHTML = `<p>Error: ${error.message}. Check console for details and ensure API keys are valid.</p>`;
@@ -84,9 +86,9 @@ async function fetchData() {
     }
 }
 
-async function fetchGeminiSummary(location, tbPercentage, temperature, pm25, fallbackText = null) {
+async function fetchGeminiSummary(location, tbRate, tbCases, tbDeaths, temperature, pm25, fallbackText = null) {
     if (fallbackText || !GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
-        return fallbackText || `In ${location}, TB patient percentage is ${tbPercentage}%, temperature is ${temperature}°C, and PM2.5 is ${pm25} µg/m³. Air quality may influence TB prevalence.`;
+        return fallbackText || `In ${location}, TB incidence rate is ${tbRate} per 100,000, with ${tbCases} cases and ${tbDeaths} deaths. Temperature is ${temperature}°C, and PM2.5 is ${pm25} µg/m³. Air quality may influence TB prevalence.`;
     }
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
@@ -96,7 +98,7 @@ async function fetchGeminiSummary(location, tbPercentage, temperature, pm25, fal
         body: JSON.stringify({
             contents: [{
                 parts: [{
-                    text: `Generate a concise summary for ${location} with TB percentage ${tbPercentage}%, temperature ${temperature}°C, and PM2.5 ${pm25} µg/m³.`
+                    text: `Generate a concise summary for ${location} with TB incidence rate ${tbRate} per 100,000, ${tbCases} TB cases, ${tbDeaths} TB deaths, temperature ${temperature}°C, and PM2.5 ${pm25} µg/m³.`
                 }]
             }]
         })
@@ -111,7 +113,7 @@ async function fetchGeminiSummary(location, tbPercentage, temperature, pm25, fal
     }
 }
 
-function displayResults(location, tbPercentage, tbCases, weatherData, pm25, geminiSummary) {
+function displayResults(location, tbRate, tbCases, tbDeaths, weatherData, pm25, geminiSummary) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = `
         <button id="back-button" onclick="goBack()">Back</button>
@@ -121,12 +123,16 @@ function displayResults(location, tbPercentage, tbCases, weatherData, pm25, gemi
                     <h3>${location}</h3>
                     <div class="data-section">
                         <div class="data-item">
-                            <div class="data-label">TB Patient Percentage</div>
-                            <div class="data-value">${tbPercentage}%</div>
+                            <div class="data-label">TB Incidence Rate (per 100,000)</div>
+                            <div class="data-value">${tbRate}</div>
                         </div>
                         <div class="data-item">
                             <div class="data-label">TB Cases</div>
                             <div class="data-value">${tbCases}</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">TB Deaths</div>
+                            <div class="data-value">${tbDeaths}</div>
                         </div>
                         <div class="data-item">
                             <div class="data-label">Temperature</div>
@@ -144,11 +150,6 @@ function displayResults(location, tbPercentage, tbCases, weatherData, pm25, gemi
                     <canvas id="chart-${location}"></canvas>
                 </div>
             </div>
-            <div class="tb-history">
-                <h2>Global TB vs. Air Quality (2020–2024)</h2>
-                <canvas id="tb-air-quality-chart"></canvas>
-                <div id="tb-table"></div>
-            </div>
         </div>
     `;
 
@@ -157,11 +158,11 @@ function displayResults(location, tbPercentage, tbCases, weatherData, pm25, gemi
     new Chart(ctxLocation, {
         type: 'bar',
         data: {
-            labels: ['TB %', 'Temp (°C)', 'PM2.5 (µg/m³)'],
+            labels: ['TB Rate (per 100,000)', 'TB Deaths', 'Temp (°C)', 'PM2.5 (µg/m³)'],
             datasets: [{
                 label: `${location} Data`,
-                data: [tbPercentage, weatherData.main.temp, pm25],
-                backgroundColor: ['#FF6384', '#FF9800', '#FFCE56'],
+                data: [tbRate, tbDeaths, weatherData.main.temp, pm25],
+                backgroundColor: ['#FF6384', '#4B0082', '#FF9800', '#FFCE56'],
                 borderWidth: 1
             }]
         },
@@ -173,8 +174,10 @@ function displayResults(location, tbPercentage, tbCases, weatherData, pm25, gemi
             plugins: { legend: { display: false } }
         }
     });
+}
 
-    // Global TB vs. Air Quality chart and table
+function renderGlobalTBChartAndTable(chartId, tableId) {
+    // Render table
     let tableHTML = `
         <table>
             <thead>
@@ -200,11 +203,12 @@ function displayResults(location, tbPercentage, tbCases, weatherData, pm25, gemi
     tableHTML += `
             </tbody>
         </table>
-        <p class="note">Note: TB incidence is global average (WHO). PM2.5 is mocked global average; 2024 data is projected as of April 2025.</p>
+        <p class="note">Note: TB incidence and deaths are from WHO Global Tuberculosis Report 2024. PM2.5 is mocked global average; 2024 data is projected as of April 2025.</p>
     `;
-    document.getElementById('tb-table').innerHTML = tableHTML;
+    document.getElementById(tableId).innerHTML = tableHTML;
 
-    const ctxGlobal = document.getElementById('tb-air-quality-chart').getContext('2d');
+    // Render chart
+    const ctxGlobal = document.getElementById(chartId).getContext('2d');
     new Chart(ctxGlobal, {
         type: 'line',
         data: {
@@ -257,10 +261,12 @@ function goBack() {
     const locationInput = document.getElementById('locationInput');
     const resultsDiv = document.getElementById('results');
     const aboutDetails = document.getElementById('about-details');
+    const graphSection = document.getElementById('graph-section');
     
     locationInput.value = '';
     resultsDiv.innerHTML = '';
     aboutDetails.style.display = 'block';
+    graphSection.style.display = 'block'; // Show global TB section
     
     const event = new Event('keyup');
     locationInput.dispatchEvent(event);
@@ -271,4 +277,9 @@ document.getElementById('locationInput').addEventListener('keyup', function() {
     const aboutDetails = document.getElementById('about-details');
     const inputValue = this.value.trim();
     aboutDetails.style.display = inputValue === '' ? 'block' : 'none';
+});
+
+// Render global TB chart and table on page load for cover page
+document.addEventListener('DOMContentLoaded', () => {
+    renderGlobalTBChartAndTable('cover-tb-air-quality-chart', 'cover-tb-table');
 });
