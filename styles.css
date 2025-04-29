@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 20px;
     background-color: #fff5e6; /* Light cream background */
@@ -8,56 +8,159 @@ body {
 
 h1 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     color: #e65100; /* Deep orange header */
+    font-size: 2.2em;
+    position: relative;
+}
+
+h1:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 3px;
+    background-color: #ff9800;
 }
 
 #container {
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 30px auto;
 }
 
-#about-section {
-    max-width: 800px;
-    margin: 0 auto 40px auto;
+/* Enhanced Dashboard Section with Highlighted Details */
+#dashboard-section {
+    max-width: 1000px; /* Narrower width for text content */
+    margin: 0 auto 20px auto; /* Reduced bottom margin */
     background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(230, 81, 0, 0.2); /* Orange shadow */
+    border-radius: 5px;
+    box-shadow: 0 6px 15px rgba(230, 81, 0, 0.25); /* Enhanced shadow */
+    border: 1px solid #ffcc80; /* Subtle border */
 }
 
-#about-section h2 {
+/* Highlighted About Details Section */
+#about-details {
+    background-color: #fff8e1; /* Light amber background */
+    border-radius: 8px;
+    padding: 22px;
+    margin-top: 15px;
+    border-left: 4px solid #ff9800; /* Thicker accent border */
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.1); /* Subtle inner shadow */
+}
+
+#about-details h2 {
+    text-align: center;
+    color: #e65100; /* Deeper orange for better contrast */
+    margin: 0 0 20px 0;
+    font-size: 1.8em;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+#about-details h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: #ff9800;
+}
+
+#about-details p {
+    line-height: 1.7;
+    margin: 18px 0;
+    font-size: 1.05em;
+}
+
+#about-details ul {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 10px;
+    line-height: 1.7;
+}
+
+#about-details li {
+    margin: 15px 0;
+    padding-left: 30px;
+    position: relative;
+}
+
+/* Custom bullet points for about details */
+#about-details li:before {
+    content: '•';
+    color: #ff7043; /* Orange bullet */
+    font-size: 1.5em;
+    position: absolute;
+    left: 0;
+    top: -2px;
+}
+
+#about-details li strong {
+    color: #d84315; /* Highlight important terms */
+    font-weight: 600;
+}
+
+#about-details p:last-child {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px dashed #ffcc80;
+    font-style: italic;
+    color: #bf360c;
+}
+
+#graph-section {
+    max-width: 1200px; /* Wider for graph */
+    margin: 20px auto 40px auto; /* Space above and below */
+}
+
+#dashboard-section h2 {
     text-align: center;
     color: #ff6f00; /* Amber */
     margin: 20px 0;
 }
 
-#about-section p {
+#dashboard-section p {
     line-height: 1.6;
     margin: 15px 0;
 }
 
-#about-section ul {
+#dashboard-section ul {
     list-style-type: disc;
     padding-left: 20px;
     line-height: 1.6;
 }
 
-#about-section li {
+#dashboard-section li {
     margin: 10px 0;
 }
 
 #input-section {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #fffdfa;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #ffe0b2;
 }
 
 #input-section input {
     padding: 12px;
-    width: 220px;
+    width: 260px;
     border: 1px solid #ffcc80; /* Light orange border */
     border-radius: 4px;
     font-size: 16px;
+    transition: all 0.3s;
+}
+
+#input-section input:focus {
+    border-color: #ff9800;
+    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+    outline: none;
 }
 
 #input-section button {
@@ -77,31 +180,31 @@ h1 {
 
 #results {
     position: relative;
+    min-height: 400px; /* Ensure space for results */
 }
 
 .results-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    justify-content: center; /* Center the location card */
     max-width: 1200px;
     margin: 0 auto;
+    padding: 40px 0; /* Increased padding for focus */
 }
 
-.location-results, .tb-history {
-    flex: 1;
-    min-width: 320px;
-    max-width: 500px;
+.location-results {
+    max-width: 700px; /* Wider for prominence */
     background: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(255, 152, 0, 0.2); /* Amber shadow */
 }
 
-.location-results {
-    flex: 1;
-    min-width: 320px;
-    max-width: 500px;
+.location-full {
+    text-align: center;
+    color: #757575;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
 }
 
 .card {
@@ -124,8 +227,7 @@ h1 {
     color: #d84315;
     font-size: 1.8em;
     text-align: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ffe0b2;
+    margin-bottom: 5px;
     padding-bottom: 10px;
 }
 
@@ -137,10 +239,16 @@ h1 {
 }
 
 .card .data-item {
-    padding: 10px;
+    padding: 12px;
     background-color: #fff8e1;
     border-radius: 6px;
     border-left: 3px solid #ff9800;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card .data-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .card .data-label {
@@ -151,8 +259,15 @@ h1 {
 }
 
 .card .data-value {
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: #5d4037;
+    font-weight: 500;
+}
+
+.data-sublabel {
+    font-size: 0.7em;
+    opacity: 0.8;
+    font-weight: normal;
 }
 
 .card .insight-section {
@@ -169,31 +284,83 @@ h1 {
     margin-bottom: 8px;
 }
 
+.data-source {
+    margin-top: 15px;
+    font-size: 0.8em;
+    color: #757575;
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px dashed #ffcc80;
+}
+
 .card canvas {
     margin-top: 25px;
     border-top: 1px solid #ffe0b2;
     padding-top: 15px;
 }
 
+/* Updated graph section with enhanced colors */
+.tb-history {
+    margin: 0 auto; /* Center horizontally */
+    max-width: 900px; /* Enlarged graph */
+    padding: 25px; /* Slightly increased padding */
+    background: #fffdfa; /* Lighter background for better contrast */
+    border-radius: 10px; /* Slightly more rounded */
+    box-shadow: 0 6px 12px rgba(255, 152, 0, 0.15); /* Softer shadow */
+    border: 1px solid #ffe0b2; /* Subtle border */
+}
+
 .tb-history h2 {
     text-align: center;
-    color: #f57c00; /* Orange */
-    margin-bottom: 20px;
-    font-size: 1.5em;
+    color: #e65100; /* Deeper orange for better contrast */
+    margin-bottom: 25px;
+    font-size: 1.6em;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.tb-history h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background-color: #ff9800;
 }
 
 .tb-history canvas {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    max-width: 100%; /* Ensure canvas fits within container */
+    height: 400px; /* Enlarged graph */
+    border-radius: 6px; /* Slightly rounded canvas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
+}
+
+/* Chart color customization classes - these will be applied via JavaScript */
+.chart-colors {
+    --chart-primary: #e65100; /* TB line color - deep orange */
+    --chart-secondary: #00796b; /* Air quality line color - teal */
+    --chart-grid: #ffe0b2; /* Grid lines - light orange */
+    --chart-labels: #5d4037; /* Axis labels - warm brown */
+    --chart-primary-point: #ff5722; /* TB data points - brighter orange */
+    --chart-secondary-point: #009688; /* Air quality data points - brighter teal */
+    --chart-primary-fill: rgba(255, 152, 0, 0.1); /* TB area fill - transparent orange */
+    --chart-secondary-fill: rgba(0, 150, 136, 0.1); /* Air quality area fill - transparent teal */
 }
 
 .tb-history table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 15px;
+    border-radius: 6px;
+    overflow: hidden; /* For rounded corners on table */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .tb-history th, .tb-history td {
-    padding: 10px;
+    padding: 12px;
     text-align: center;
     border: 1px solid #ffe0b2; /* Very light orange border */
 }
@@ -201,16 +368,30 @@ h1 {
 .tb-history th {
     background-color: #ff9800; /* Orange table header */
     color: white;
+    font-weight: 500;
 }
 
 .tb-history tr:nth-child(even) {
     background-color: #fff8e1; /* Very light amber background */
 }
 
+.tb-history tr:nth-child(odd) {
+    background-color: #ffffff; /* White background for odd rows */
+}
+
+.tb-history tr:hover {
+    background-color: #fff3e0; /* Hover effect */
+}
+
 .tb-history .note {
     font-size: 0.9em;
     color: #bf360c; /* Deep orange/red text */
     text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #fff8e1;
+    border-radius: 4px;
+    border-left: 3px solid #ff6f00;
 }
 
 #back-button {
@@ -230,8 +411,66 @@ h1 {
 #back-button:hover {
     background-color: #ff8f00; /* Darker amber on hover */
 }
+    
+/* Loading indicator */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+}
 
-canvas {
-    max-width: 100%;
-    margin-top: 15px;
+.loading-spinner {
+    border: 5px solid #ffe0b2;
+    border-top: 5px solid #ff9800;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Air quality level indicators */
+.quality-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    #dashboard-section {
+        padding: 15px;
+        max-width: 100%; /* Full width on small screens */
+    }
+    #graph-section {
+        margin: 10px auto;
+    }
+    .tb-history {
+        max-width: 100%; /* Full width on small screens */
+        padding: 15px;
+    }
+    .tb-history canvas {
+        height: 300px; /* Slightly smaller height on mobile */
+    }
+    .location-results {
+        max-width: 100%; /* Full width on small screens */
+    }
+    .card .data-section {
+        grid-template-columns: 1fr; /* Stack data items on mobile */
+    }
+    #about-details {
+        padding: 15px;
+    }
+    #about-details li {
+        padding-left: 25px;
+    }
 }
