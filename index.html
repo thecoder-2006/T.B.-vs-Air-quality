@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB & Air Quality Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>TB vs Air Quality Dashboard</h1>
+    <div id="dashboard-section">
+        <div id="input-section">
+            <input type="text" id="locationInput" placeholder="Enter location (e.g., Mumbai, London)">
+            <button onclick="fetchData()">Get Data</button>
+        </div>
+        <div id="about-details">
+            <h2>About This Dashboard</h2>
+            <p>This dashboard provides a comprehensive analysis of tuberculosis (TB) prevalence, weather conditions, and air quality for locations worldwide. It aims to highlight potential correlations between environmental factors and TB rates.</p>
+            <ul>
+                <li><strong>TB Data:</strong> Displays accurate TB statistics based on WHO's Global TB Reports, including incidence rates, estimated cases, and deaths.</li>
+                <li><strong>Weather Data:</strong> Fetches current temperature and conditions from the OpenWeatherMap API, displayed in Celsius.</li>
+                <li><strong>Air Quality:</strong> Retrieves PM2.5 levels (a key air pollution metric) from the OpenWeatherMap Air Pollution API.</li>
+                <li><strong>Analysis:</strong> Uses AI-powered insights to analyze potential correlations between TB prevalence, temperature, and air quality data.</li>
+                <li><strong>Global Trends:</strong> View historical data (2020-2024) showing the relationship between global TB incidence and PM2.5 air pollution levels.</li>
+            </ul>
+            <p>TB remains a major global health challenge with approximately 10.5 million people falling ill and 1.25 million dying from TB annually. Research suggests air pollution may be an underappreciated risk factor for TB transmission and severity.</p>
+            <p>Enter a location above to explore the data. The dashboard will display the most accurate available TB data for your selected location or region.</p>
+        </div>
+    </div>
+    <div id="graph-section">
+        <div class="tb-history" id="cover-tb-history">
+            <h2>Global TB vs. Air Quality (2020–2024)</h2>
+            <canvas id="cover-tb-air-quality-chart"></canvas>
+            <div id="cover-tb-table"></div>
+        </div>
+    </div>
+    <div id="container">
+        <div id="results"></div>
+    </div>
 
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
